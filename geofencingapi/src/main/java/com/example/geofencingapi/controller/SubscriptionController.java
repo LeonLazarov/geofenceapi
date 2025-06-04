@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/subscriptions") // ✅ More descriptive and namespaced
+@RequestMapping("/api/subscriptions")
 @RequiredArgsConstructor
 public class SubscriptionController {
 
@@ -18,7 +18,6 @@ public class SubscriptionController {
     private final DeviceService deviceService;
     private final ZoneService zoneService;
 
-    // Subscribe a device to a zone
     @PostMapping
     public Subscription subscribe(
             @RequestParam String deviceId,
