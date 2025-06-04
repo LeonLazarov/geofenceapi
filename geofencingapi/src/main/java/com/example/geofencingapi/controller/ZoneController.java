@@ -2,8 +2,11 @@ package com.example.geofencingapi.controller;
 
 import com.example.geofencingapi.model.Zone;
 import com.example.geofencingapi.service.ZoneService;
+import com.example.geofencingapi.dto.ZoneUpdateRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -26,15 +29,17 @@ public class ZoneController {
 
     @GetMapping("/{id}")
     public Zone getZone(@PathVariable Long id) {
-        return zoneService.getZoneById(id).orElseThrow();
+        return zoneService.getZoneById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Zone not found"));
     }
 
     @PatchMapping("/{id}")
-    public Zone updateZone(@PathVariable Long id, @RequestBody Zone zone) {
-        return zoneService.updateZone(id, zone);
+    public Zone updateZone(@PathVariable Long id, @RequestBody ZoneUpdateRequest updateRequest) {
+        return zoneService.updateZonePartial(id, updateRequest);
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteZone(@PathVariable Long id) {
         zoneService.deleteZone(id);
     }
