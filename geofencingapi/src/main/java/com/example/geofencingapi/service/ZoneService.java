@@ -44,8 +44,14 @@ public class ZoneService {
         if (updateRequest.getName() != null) {
             zone.setName(updateRequest.getName());
         }
+
         if (updateRequest.getCoordinates() != null) {
-            zone.setCoordinates(updateRequest.getCoordinates());
+            // Convert List<List<Double>> to List<String> — e.g., "41.123,20.456"
+            List<String> formattedCoordinates = updateRequest.getCoordinates().stream()
+                    .map(pair -> pair.get(0) + "," + pair.get(1))
+                    .toList();
+
+            zone.setCoordinates(formattedCoordinates);
         }
 
         return zoneRepository.save(zone);
